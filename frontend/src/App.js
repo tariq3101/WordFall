@@ -2,17 +2,16 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 
 const App = () => {
-  const [fallingWords, setFallingWords] = useState([]); // Array to store falling words
-  const [currentWord, setCurrentWord] = useState(''); // User input
-  const [score, setScore] = useState(0); // Score
-  const [gameStarted, setGameStarted] = useState(false); // Game state
-  const [timer, setTimer] = useState(60); // Timer - 60 seconds
-  const [wordIndex, setWordIndex] = useState(0); // Keeps track of the current word index
-  const [fallingSpeed, setFallingSpeed] = useState(2); // Falling speed control for difficulty
-  const [speedMode, setSpeedMode] = useState('Easy'); // Speed mode for display
-  const [fallingInterval, setFallingInterval] = useState(null); // Interval for falling words
+  const [fallingWords, setFallingWords] = useState([]); 
+  const [currentWord, setCurrentWord] = useState(''); 
+  const [score, setScore] = useState(0); 
+  const [gameStarted, setGameStarted] = useState(false); 
+  const [timer, setTimer] = useState(60);
+  const [wordIndex, setWordIndex] = useState(0); 
+  const [fallingSpeed, setFallingSpeed] = useState(2); 
+  const [speedMode, setSpeedMode] = useState('Easy'); 
+  const [fallingInterval, setFallingInterval] = useState(null); 
 
-  // List of random words
   const randomWords = [
     'apple', 'banana', 'orange', 'grape', 'dragonfruit', 'strawberry', 'pineapple', 
     'kiwi', 'mango', 'watermelon', 'blueberry', 'cherry', 'pear', 'peach', 'apricot', 
@@ -23,7 +22,6 @@ const App = () => {
     'asparagus', 'pumpkin', 'eggplant', 'potato', 'garlic', 'ginger', 'chili', 'parsley'
   ];
 
-  // Fetch words and set them for falling
   useEffect(() => {
     if (gameStarted) {
       const selectedWords = [];
@@ -35,16 +33,15 @@ const App = () => {
     }
   }, [gameStarted]);
 
-  // Handle the timer countdown
   useEffect(() => {
     if (gameStarted && timer > 0) {
       const timerInterval = setInterval(() => {
         setTimer(prevTimer => prevTimer - 1);
-      }, 1000); // Update the timer every second
+      }, 1000);
 
       return () => clearInterval(timerInterval);
     } else if (timer === 0) {
-      setGameStarted(false); // Stop the game when time runs out
+      setGameStarted(false); 
     }
   }, [gameStarted, timer]);
 
@@ -55,20 +52,19 @@ const App = () => {
         setFallingWords(prev =>
           prev.map((word, index) =>
             index === wordIndex
-              ? { ...word, y: word.y + fallingSpeed } // Move word down
+              ? { ...word, y: word.y + fallingSpeed } 
               : word
           )
         );
-      }, 100); // Move word every 100ms
+      }, 100); 
 
-      setFallingInterval(interval); // Save the falling words interval
+      setFallingInterval(interval); 
 
-      // Check if the current word reaches the bottom of the screen
       if (fallingWords[wordIndex]?.y > 90) {
-        setWordIndex(prevIndex => prevIndex + 1); // Move to the next word
+        setWordIndex(prevIndex => prevIndex + 1); 
       }
 
-      return () => clearInterval(interval); // Cleanup the interval on component unmount
+      return () => clearInterval(interval); 
     }
   }, [gameStarted, fallingWords, wordIndex, fallingSpeed, timer]);
 
@@ -79,26 +75,26 @@ const App = () => {
     // Check if the user typed the correct word
     const matchedWord = fallingWords.find(word => word.text === e.target.value);
     if (matchedWord) {
-      setScore(prevScore => prevScore + 10);  // Increase score for correct word
-      setFallingWords(fallingWords.filter(word => word.text !== matchedWord.text));  // Remove word
-      setCurrentWord('');  // Reset input field
-      setWordIndex(prevIndex => prevIndex + 1); // Move to the next word
+      setScore(prevScore => prevScore + 10);  
+      setFallingWords(fallingWords.filter(word => word.text !== matchedWord.text));  
+      setCurrentWord(''); 
+      setWordIndex(prevIndex => prevIndex + 1); 
     }
   };
 
   // Start game
   const handleStart = () => {
-    setGameStarted(true);  // Start the game
-    setScore(0);  // Reset score
-    setTimer(60);  // Reset timer to 60 seconds
-    setWordIndex(0);  // Start from the first word
-    setSpeedMode('Easy'); // Set default speed mode
+    setGameStarted(true);  
+    setScore(0);  
+    setTimer(60);  
+    setWordIndex(0);  
+    setSpeedMode('Easy'); 
   };
 
   // Stop game
   const handleStop = () => {
-    setGameStarted(false);  // Stop the game
-    clearInterval(fallingInterval); // Clear falling words interval immediately
+    setGameStarted(false);  
+    clearInterval(fallingInterval); 
   };
 
   // Difficulty level adjustment
@@ -107,7 +103,7 @@ const App = () => {
       setFallingSpeed(2); // Slow falling speed
       setSpeedMode('Easy');
     } else if (level === 'medium') {
-      setFallingSpeed(4); // Moderate falling speed
+      setFallingSpeed(4); // Medium falling speed
       setSpeedMode('Medium');
     } else if (level === 'hard') {
       setFallingSpeed(6); // Fast falling speed
@@ -117,7 +113,7 @@ const App = () => {
 
   return (
     <div className="game-container">
-      <h1>Word Fall</h1>
+      <h1>WordFall</h1>
       <div className="score-timer-container">
         <div className="score">Score: {score}</div>
         <div className="timer">Time: {timer}s</div>
@@ -150,14 +146,13 @@ const App = () => {
       {gameStarted && (
         <div>
           <div className="falling-words-box">
-            {/* Display falling words in a box */}
             {fallingWords.length > 0 && fallingWords[wordIndex] && (
               <div
                 className="falling-word"
                 style={{
                   top: `${fallingWords[wordIndex]?.y}%`,
-                  left: `50%`, // Fixed horizontal position in the middle
-                  transform: 'translateX(-50%)', // Center the word horizontally
+                  left: `50%`, 
+                  transform: 'translateX(-50%)',
                 }}
               >
                 {fallingWords[wordIndex]?.text}
@@ -172,7 +167,7 @@ const App = () => {
             onChange={handleInputChange}
             placeholder="Type the falling word"
             className="input-field"
-            disabled={timer === 0} // Disable input after timer ends
+            disabled={timer === 0} 
           />
           <button onClick={handleStop} className="stop-btn">
             Stop Game
