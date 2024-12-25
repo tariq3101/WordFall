@@ -1,0 +1,152 @@
+/* Global Styling */
+body {
+  background: linear-gradient(135deg, #ff9a8b, #ff6a88, #ff3a44);
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  color: #fff;
+}
+
+/* Game Container */
+.game-container {
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.6);
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  padding: 20px;
+  width: 380px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Title */
+h1 {
+  font-size: 30px;
+  margin-bottom: 20px;
+  color: #fff;
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Score and Timer */
+.score-timer-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.score, .timer {
+  font-size: 18px;
+  font-weight: bold;
+  color: #ffcc00;
+}
+
+/* Speed Mode Display */
+.speed-mode {
+  font-size: 16px;
+  font-weight: bold;
+  color: #ffcc00;
+  margin-top: 10px;
+}
+
+/* Difficulty Buttons */
+.difficulty-buttons {
+  margin-bottom: 20px;
+}
+
+.difficulty-btn {
+  background-color: #ff6a88;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: 0.3s;
+}
+
+.difficulty-btn:hover {
+  background-color: #ff3a44;
+}
+
+/* Start/Stop Buttons */
+.start-btn, .stop-btn {
+  background-color: #2196f3;
+  color: white;
+  border: none;
+  padding: 15px;
+  font-size: 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 20px;
+  transition: 0.3s;
+}
+
+.start-btn:hover, .stop-btn:hover {
+  background-color: #0b7dda;
+}
+
+.stop-btn {
+  background-color: #ff4081;
+}
+
+.stop-btn:hover {
+  background-color: #ff1f63;
+}
+
+/* Falling Words Box */
+.falling-words-box {
+  position: relative;
+  height: 350px;
+  margin-bottom: 20px;
+  border: 2px dashed #ffcc00;
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.2);
+  width: 100%;
+}
+
+/* Falling Words */
+.falling-word {
+  position: absolute;
+  font-size: 24px;
+  color: #ffcc00;
+  font-weight: bold;
+  animation: fall 1s linear infinite;
+  user-select: none;
+}
+
+/* Input Field */
+.input-field {
+  width: 250px;
+  padding: 10px;
+  font-size: 16px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  border: 2px solid #d9a9f8;
+  display: inline-block;
+  box-sizing: border-box;
+}
+
+.game-over {
+  font-size: 24px;
+  font-weight: bold;
+  color: #ffcc00;
+  margin-top: 20px;
+}
+
+/* Game Over Animation */
+@keyframes fall {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(100px);
+  }
+}
