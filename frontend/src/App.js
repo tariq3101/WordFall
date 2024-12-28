@@ -24,49 +24,46 @@ const App = () => {
 
   useEffect(() => {
     if (gameStarted) {
+      // Initialize falling words
       const selectedWords = [];
       for (let i = 0; i < 50; i++) {
         const word = randomWords[Math.floor(Math.random() * randomWords.length)];
         selectedWords.push({ text: word, y: 0 });
       }
       setFallingWords(selectedWords);
-    }
-  }, [gameStarted]);
-
-  useEffect(() => {
-    if (gameStarted && timer > 0) {
+  
+      // Start the timer
       const timerInterval = setInterval(() => {
         setTimer(prevTimer => prevTimer - 1);
       }, 1000);
-
-      return () => clearInterval(timerInterval);
-    } else if (timer === 0) {
-      setGameStarted(false); 
+  
+      return () => clearInterval(timerInterval); // Clean up on game stop or unmount
     }
-  }, [gameStarted, timer]);
-
-  // Handle word falling effect
+  }, [gameStarted]);
+  
   useEffect(() => {
     if (gameStarted && timer > 0) {
-      const interval = setInterval(() => {
+      const fallingInterval = setInterval(() => {
         setFallingWords(prev =>
           prev.map((word, index) =>
-            index === wordIndex
-              ? { ...word, y: word.y + fallingSpeed } 
-              : word
+            index === wordIndex ? { ...word, y: word.y + fallingSpeed } : word
           )
         );
-      }, 100); 
-
-      setFallingInterval(interval); 
-
-      if (fallingWords[wordIndex]?.y > 90) {
-        setWordIndex(prevIndex => prevIndex + 1); 
-      }
-
-      return () => clearInterval(interval); 
+  
+        // Check if the current word has fallen out of bounds
+        if (fallingWords[wordIndex]?.y > 90) {
+          setWordIndex(prevIndex => prevIndex + 1); // Move to the next word
+        }
+      }, 100);
+  
+      return () => clearInterval(fallingInterval); // Clean up on game stop or unmount
     }
-  }, [gameStarted, fallingWords, wordIndex, fallingSpeed, timer]);
+  
+    if (timer === 0) {
+      setGameStarted(false); // Stop the game when time runs out
+    }
+  }, [gameStarted, timer, wordIndex, fallingWords, fallingSpeed]);
+  
 
   // Handle user input
   const handleInputChange = (e) => {
@@ -100,13 +97,13 @@ const App = () => {
   // Difficulty level adjustment
   const setDifficulty = (level) => {
     if (level === 'easy') {
-      setFallingSpeed(2); // Slow falling speed
+      setFallingSpeed(1); // Slow falling speed
       setSpeedMode('Easy');
     } else if (level === 'medium') {
-      setFallingSpeed(4); // Medium falling speed
+      setFallingSpeed(2); // Medium falling speed
       setSpeedMode('Medium');
     } else if (level === 'hard') {
-      setFallingSpeed(6); // Fast falling speed
+      setFallingSpeed(3); // Fast falling speed
       setSpeedMode('Hard');
     }
   };
@@ -120,11 +117,9 @@ const App = () => {
       </div>
 
       {/* Display Speed Mode */}
-      {gameStarted && (
         <div className="speed-mode">
           Speed Mode: {speedMode}
         </div>
-      )}
 
       {/* Difficulty buttons */}
       {!gameStarted && (
